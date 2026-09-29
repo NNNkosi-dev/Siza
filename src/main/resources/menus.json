@@ -1,0 +1,13 @@
+{
+  "WELCOME": "Siza\nWhat do you need?\n1. I need help now\n2. Share my location\n3. Walking check-in",
+  "DANGER_CHECK": "Are you in immediate danger?\n1. Yes, someone is here\n2. No, but I feel unsafe\n3. I'm not sure",
+  "PANIC_SENT": "Alert sent to your contacts.\nHelp is being notified.\nStay on the line if you can.\nPress any key to exit.",
+  "ASK_LOCATION": "Where are you?\n1. I can type a street name\n2. I don't know where I am",
+  "LOCATION_TEXT": "Type the street name or landmark:",
+  "LOCATION_UNKNOWN": "Alert sent with your last known area.\nYour contacts are being notified.\nPress any key to exit.",
+  "REPORT_CONFIRMED": "Report sent.\nYour contacts will see it.\nPress any key to exit.",
+  "CHECKIN_MENU": "Check-in\n1. I'm okay\n2. I need help",
+  "CHECKIN_OK": "Good. Your contacts know you're okay.\nPress any key to exit.",
+  "GOODBYE": "Session ended.\nDial again if you need help.",
+  "END": "Session ended."
+}

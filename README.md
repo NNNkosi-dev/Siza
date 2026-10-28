@@ -1,5 +1,31 @@
 # Siza: USSD Emergency Alert Service
 
+A backend service that simulates how a USSD emergency alert system works. 
+
+### What it looks like in action
+Because Siza is a backend service, there is no visual interface. Here is what it looks like when a user reports a panic and the system sends the SMS:
+
+```text
+# 1. The user dials in and sends a USSD request
+> POST /ussd (Form-encoded)
+> sessionId=demo1&phoneNumber=27821234567&text=1
+
+# 2. The server responds with the next menu screen
+< HTTP 200 OK
+< "Are you in immediate danger?
+< 1. Yes, someone is here
+< 2. No, but I feel unsafe"
+
+# 3. The user selects option 1 (Yes)
+> POST /ussd (JSON format)
+> {"sessionId":"demo1","phoneNumber":"27821234567","text":"1"}
+
+# 4. The server triggers the alert and logs the SMS dispatch
+< HTTP 200 OK
+< "Alert sent to your contacts. Help is being notified."
+[SESSION END] phone=+27821234567 terminalState=PANIC_SENT
+[SMS] to=+27821234567 body="Siza: your alert was received. Location: last known area."
+
 Siza is a small Java project that simulates how an emergency alert service could work using USSD and SMS.
 The idea is simple: someone dials a USSD code, chooses an option from a menu, and the service creates an alert and sends it through an SMS service.
 I built this mainly to learn how USSD and SMS gateways fit together. I also wanted to get more comfortable using Maven, JUnit, and Gson in the same project.

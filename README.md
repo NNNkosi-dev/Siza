@@ -158,7 +158,7 @@ curl -X POST http://localhost:8080/ussd \
 
 ### No real SMS gateway
 
-`MockSmsSender` just logs the alert to the console. A real implementation would be a new class that implements `SmsSender` needing no changes needed anywhere else.
+`MockSmsSender` just logs the alert to the console. A real implementation would be a new class that implements `SmsSender` with no no changes needed anywhere else.
 
 ### No database
 
@@ -199,16 +199,22 @@ There are still quite a few things missing, but the basic flow works locally. He
 
 ```text
 USSD request
-    ↓
+    |
+    v
 Session
-    ↓
+    |
+    v
 Menu
-    ↓
+    |
+    v
 User selection
-    ↓
+    |
+    v
 Alert
-    ↓
+    |
+    v
 SmsSender
-    ↓
+    |
+    v
 Mock SMS
 ```

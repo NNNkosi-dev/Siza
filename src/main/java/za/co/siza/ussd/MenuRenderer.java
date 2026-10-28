@@ -9,27 +9,38 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
- * Turns a MenuState into the text the user sees on their phone.
- *
- * Menu text is loaded from /menus.json on the classpath at construction time.
- * If the file is missing or unreadable, falls back to hardcoded defaults so
- * tests and dev environments still work.
- *
- * USSD screens are capped at 182 characters on most South African networks.
+ * This class is responsible for turning the MenuState (like WELCOME or ASK_LOCATION) 
+ * into the actual text that the user sees on their phone screen.
+ * 
+ * When the app starts, it tries to load the menu text from a file (menus.json). 
+ * If that file is missing, or broken, it just falls back to the hardcoded 
+ * text at the bottom of this file so the app never crashes.
  */
 public final class MenuRenderer {
 
+    // Here is our "magic number" pulled out into a constant.
+    // Most South African networks cut off USSD text after 182 characters.
+    // If the network limit changes, we only have to update this one line.
     public static final int MAX_SCREEN_LENGTH = 182;
+    
+    // The name of the file we try to load from the resources folder.
     private static final String MENUS_RESOURCE = "/menus.json";
 
+    // This holds the menu text loaded from the JSON file. 
+    // If the file didn't load, this will just be empty.
     private final Map<String, String> customMenus;
 
     public MenuRenderer() {
+        // When we create a new MenuRenderer, it immediately tries to load the JSON file.
         this.customMenus = loadMenus();
     }
 
     public String render(MenuState state) {
+        // Try to find the text in the loaded JSON file.
+        // If it's not there, use the defaultText() method at the bottom of this file.
         String text = customMenus.getOrDefault(state.name(), defaultText(state));
+        
+        // Safety check: If the text is too long for a USSD screen, chop it off.
         if (text.length() > MAX_SCREEN_LENGTH) {
             text = text.substring(0, MAX_SCREEN_LENGTH);
         }
@@ -42,11 +53,14 @@ public final class MenuRenderer {
                 System.out.println("menus.json not found on classpath; using defaults.");
                 return Map.of();
             }
+            
             Map<String, String> parsed = new Gson().fromJson(
                 new InputStreamReader(is, StandardCharsets.UTF_8),
                 new TypeToken<Map<String, String>>() {}.getType()
             );
+            
             return parsed == null ? Map.of() : parsed;
+            
         } catch (Exception e) {
             System.err.println("Failed to load " + MENUS_RESOURCE
                 + " (" + e.getMessage() + "); using defaults.");
